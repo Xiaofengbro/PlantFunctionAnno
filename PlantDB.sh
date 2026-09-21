@@ -25,15 +25,21 @@ diamond makedb --in uniprot_trembl_plants.fa --db uniprot_trembl_plants
 
 ## eggNOG (Using Streptophyta here, not all DataBase)
 #Streptophyta (35493): http://eggnog5.embl.de/download/eggnog_5.0/per_tax_level/35493/
+gunzip 35493_annotations.tsv.gz
+# using blast
 tar -xvf 35493_raw_algs.tar
 gunzip -c ./35493/*.gz >> Streptophyta.fa
 sed -i 's/-//g' Streptophyta.fa
 diamond makedb --in Streptophyta.fa --db Streptophyta
-gunzip 35493_annotations.tsv.gz
-awk 'BEGIN{OFS="\t"} {print $2, "[" $3 "]"" " $4}' 35493_annotations.tsv > og2anno.tsv
 gunzip -c 35493_members.tsv.gz | cut -f2,5 | awk -F'\t' '{n=split($2,a,",");for(i=1;i<=n;i++)print $1"\t"a[i]}' > id2og.tsv
 awk -F'\t' 'NR==FNR{a[$2]="["$3"] "$4;next} $1 in a{print $2"\t"a[$1]}' 35493_annotations.tsv id2og.tsv > id2anno.tsv
+rm -rf 35493
+# using hmmer
+awk 'BEGIN{OFS="\t"} {print $2, "[" $3 "]"" " $4}' 35493_annotations.tsv > og2anno.tsv
 tar -zxvf 35493_hmms.tar.gz
 for file in 35493/*.hmm; do filename=$(basename ${file} .hmm); sed -i "3i ACC   $filename\nDESC  $filename" "$file"; done
 ls 35493/*.hmm |  serialize_hmm_models -b Streptophyta.pkl.gz
 rm -rf 35493
+
+## iTAK
+# https://github.com/kentnf/iTAK
