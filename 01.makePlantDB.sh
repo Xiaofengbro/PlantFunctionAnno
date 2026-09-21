@@ -26,7 +26,7 @@ diamond makedb --in uniprot_trembl_plants.fa --db uniprot_trembl_plants
 ## eggNOG (Using Streptophyta here, not all DataBase)
 #Streptophyta (35493): http://eggnog5.embl.de/download/eggnog_5.0/per_tax_level/35493/
 gunzip 35493_annotations.tsv.gz
-# using blast
+# using diamond
 tar -xvf 35493_raw_algs.tar
 gunzip -c ./35493/*.gz >> Streptophyta.fa
 sed -i 's/-//g' Streptophyta.fa
