@@ -40,12 +40,8 @@ def main():
                 continue
             pathway_id = parts[0].strip()
             description = parts[1].strip() if len(parts) > 1 else ""
-            class1 = parts[2].strip() if len(parts) > 2 else ""
-            class2 = parts[3].strip() if len(parts) > 3 else ""
             pathway_info[pathway_id] = {
                 "description": description,
-                "class1": class1,
-                "class2": class2
             }
 
     gene_pathway_records = []
@@ -75,8 +71,6 @@ def main():
                     pathway_id,
                     {
                         "description": "",
-                        "class1": "",
-                        "class2": ""
                     }
                 )
                 description = info["description"]
@@ -91,8 +85,6 @@ def main():
                     gene,
                     pathway_id,
                     description,
-                    info["class1"],
-                    info["class2"]
                 ])
             pathway_text = "; ".join(pathway_strings) if pathway_strings else "-"
             fout.write(
