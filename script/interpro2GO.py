@@ -67,6 +67,8 @@ with open(args.input, "r") as f:
             if not go_id.startswith("GO:"):
                 continue
             real_go = alt2go.get(go_id, go_id)
+            if real_go not in go_info:
+                continue
             key = (gene, real_go)
             if key in seen_gene_go:
                 continue
