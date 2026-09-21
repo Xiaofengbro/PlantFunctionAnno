@@ -51,12 +51,12 @@ cut -f1,2 ${pep}_output/shiu_classification.txt | sed '1i\gene\tiTAK_PK' > iTAK_
 ## INFO
 total=$(awk 'NR>1 && $1!=""{print $1}' allpep.id | sort -u | wc -l)
 echo -e "Database\tAnnotated\tRate" > annotation.summary
-for f in *.anno; do
-    n=$(awk 'NR>1 && $1!=""{print $1}' "$f" | sort -u | wc -l)
+for ann in *.anno; do
+    n=$(awk 'NR>1 && $1!=""{print $1}' "$ann" | sort -u | wc -l)
     rate=$(awk -v n="$n" -v t="$total" 'BEGIN{printf "%.2f%%",n/t*100}')
-    echo -e "${f%.anno}\t$n\t$rate" >> annotation.summary
+    echo -e "${ann%.anno}\t$n\t$rate" >> annotation.summary
 done
-all=$(for f in *.anno; do awk 'NR>1{print $1}' "$f"; done|sort -u|wc -l); 
+all=$(for ann in *.anno; do awk 'NR>1{print $1}' "$ann"; done|sort -u|wc -l); 
 awk -v n=$all -v t=$total 'BEGIN{printf "ALL\t%d\t%.2f%%\n",n,n/t*100}' >> annotation.summary
 ## combine
 awk -F'\t' 'NR==FNR {b[$1]=$2; next} {if ($1 in b) $2=b[$1]; else $2="-"; print}' OFS='\t' NR.anno allpep.id > all.NR.anno
