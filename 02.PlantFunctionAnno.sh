@@ -22,7 +22,8 @@ awk '{a[$1]=a[$1] (a[$1]?",":"") $2} END{for(i in a) print i"\t"a[i]}' TrEMBL.bl
 python ~/script/anno_dir/uniprot2anno.py -i id2upt.tsv -a ~/00.databases/uniprot/uniprot_trembl_plants.tsv -o TrEMBL.anno
 rm TrEMBL.blast.out.best id2upt.tsv
 ## KEGG & Pathway
-nohup exec_annotation --cpu 128 -f detail-tsv -p ~/00.databases/kofam/profiles/ -k ~/00.databases/kofam/ko_list -E 1e-5 -o kegg.txt --tmp-dir ./kegg_tem $pep &
+exec_annotation --cpu 128 -f detail-tsv -p ~/00.databases/kofam/profiles/ -k ~/00.databases/kofam/ko_list -E 1e-5 -o kegg.txt --tmp-dir ./kegg_tem $pep 
+# "pykofamsearch" can be used (https://github.com/jolespin/pykofamsearch)
 python ~/script/anno_dir/post-kofamscan.py -i kegg.txt -k ~/script/anno_dir/Richer_anno/ko2pathway.list -d ~/script/anno_dir/Richer_anno/pathway_descript.txt -o KEGG.anno -b gene.pathway.bg
 ## eggNOG
 pyhmmsearch -i $pep -b ~/00.databases/emapper/Streptophyta.pkl.gz -o eggnog.hmm.out -p 128 -e 1e-10
